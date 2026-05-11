@@ -1,5 +1,4 @@
-[![brew test-bot](https://github.com/vigo/homebrew-ascension/actions/workflows/tests.yml/badge.svg)](https://github.com/vigo/homebrew-ascension/actions/workflows/tests.yml)
-[![brew pr-pull](https://github.com/vigo/homebrew-ascension/actions/workflows/publish.yml/badge.svg)](https://github.com/vigo/homebrew-ascension/actions/workflows/publish.yml)
+[![cask CI](https://github.com/vigo/homebrew-ascension/actions/workflows/tests.yml/badge.svg)](https://github.com/vigo/homebrew-ascension/actions/workflows/tests.yml)
 
 # Homebrew Tap for Ascension
 

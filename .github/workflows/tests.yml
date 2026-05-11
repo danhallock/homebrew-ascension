@@ -1,4 +1,4 @@
-name: brew test-bot
+name: cask CI
 
 on:
   push:
@@ -7,45 +7,27 @@ on:
   pull_request:
 
 jobs:
-  test-bot:
-    strategy:
-      matrix:
-        os: [ macos-15-intel, macos-26 ]
-        include:
-          - os: ubuntu-latest
-            container: ghcr.io/homebrew/brew:main
-    runs-on: ${{ matrix.os }}
-    container: ${{ matrix.container }}
+  cask:
+    runs-on: macos-latest
     permissions:
-      actions: read
-      checks: read
       contents: read
-      pull-requests: read
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: Set up Homebrew
-        id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Cache Homebrew Bundler RubyGems
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
-          key: ${{ matrix.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
-          restore-keys: ${{ matrix.os }}-rubygems-
+      - name: Audit cask
+        run: brew audit --cask --strict --online ./Casks/ascension.rb
 
-      - run: brew test-bot --only-cleanup-before
+      - name: Prepare app directory
+        run: mkdir -p "$RUNNER_TEMP/Applications"
 
-      - run: brew test-bot --only-setup
+      - name: Install cask
+        run: brew install --cask --no-quarantine --appdir="$RUNNER_TEMP/Applications" ./Casks/ascension.rb
 
-      - run: brew test-bot --only-tap-syntax
-      - run: brew test-bot --only-formulae
-        if: github.event_name == 'pull_request'
-
-      - name: Upload bottles as artifact
-        if: always() && github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: bottles_${{ matrix.os }}
-          path: '*.bottle.*'
+      - name: Uninstall cask
+        run: brew uninstall --cask ascension
