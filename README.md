@@ -1,5 +1,3 @@
-[![cask CI](https://github.com/vigo/homebrew-ascension/actions/workflows/tests.yml/badge.svg)](https://github.com/vigo/homebrew-ascension/actions/workflows/tests.yml)
-
 # Homebrew Tap for Ascension
 
 ANSI/ASCII art viewer and text editor for macOS.
