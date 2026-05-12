@@ -8,6 +8,7 @@ cask "ascension" do
   homepage "https://github.com/vigo/Ascension"
 
   depends_on macos: ">= :ventura"
+  depends_on formula: "libansilove"
 
   app "Ascension.app"
 
